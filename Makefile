@@ -1,6 +1,4 @@
 build1:
-	cc src/main.c src/floTerm.c -o floTerm
+	cc src/main.c src/floTerm.c
 build2:
-	cc src/main_2.c src/floTerm.c -o floTerm
-run:
-	./floTerm
+	cc src/main_2.c src/floTerm.c
