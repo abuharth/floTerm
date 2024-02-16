@@ -8,6 +8,10 @@
 // TODO: add support for background colors, change names in the
 // COLOR ENUM to not clog the namespace
 
+// TODO: pass a pointer to buf to avoid making a local copy on
+// each function call, also this allows us to actually free
+// the memory from the buffer on termQuit
+
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
 int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
