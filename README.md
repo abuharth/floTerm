@@ -1,5 +1,5 @@
 # floTerm
-A simple and intuitive terminal drawing library. Featuring unicode characters and color!
+Simple and intuitive terminal drawing library. Featuring unicode characters and color!
 
 ![image](https://github.com/abuharth/floTerm/assets/145587343/f2865f83-4f92-497a-ad0f-c3c4707b0cce)
 
