@@ -9,6 +9,9 @@
 // the cull buffer at the end of drawing so that there are much
 // less escape sequences sent to accommodate for colors
 
+// TODO: add support for background colors, change names in the
+// COLOR ENUM to not clog the namespace
+
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
