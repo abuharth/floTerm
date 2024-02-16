@@ -10,27 +10,25 @@
 
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
-void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
+int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
-        // termQuit(buf);
-        printf("ERROR buf_print_char: coordinates out of range!\n");
-        return;
+        return -1;
     }
     buf.text[(y*buf.width) + x] = c;
     buf.color[(y*buf.width) + x] = color;
     // only overwrite the color if here was nothing set beneath
     if (buf.color[(y*buf.width) + x + 1] == BLANK) {
         buf.color[(y*buf.width) + x + 1] = DEFAULT;
-    } 
+    }
+    return 0;
 }
 
 // print a string of unicode characters to the buffer starting at position (x, y)
 // double wide characters are not preferred as they offset the row
-void buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, color_t color) {
+int buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, color_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
-        // termQuit(buf);
         printf("ERROR buf_print_str: coordinates out of range!\n");
-        return;
+        return -1;
     }
 
     int j = 0;
@@ -46,6 +44,7 @@ void buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, color_t color) {
     if (buf.color[(y*buf.width) + x + wcslen(s)] == BLANK) {
         buf.color[(y*buf.width) + x + wcslen(s)] = DEFAULT;
     } 
+    return 0;
 }
 
 void clear_buf(tbuf_t buf, wchar_t c, color_t color) {
