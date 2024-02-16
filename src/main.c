@@ -1,4 +1,4 @@
-// Very simple example of using floTerm.h all you need is the floTerm header,
+// Very simple example of using floTerm.h. All you need is to include the floTerm header,
 // unistd.h for the usleep() function, and signal.h to handle exit signals
 
 #include <unistd.h>
