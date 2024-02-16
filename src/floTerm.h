@@ -27,7 +27,6 @@ typedef enum {
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color);
 void buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, color_t color);
 void clear_buf(tbuf_t buf, wchar_t c, color_t color);
-void apply_color(color_t color);
 void present_buf(tbuf_t buf);
 
 void termInit(tbuf_t *buf, int width, int height);
