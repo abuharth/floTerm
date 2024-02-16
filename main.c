@@ -5,8 +5,8 @@
 #include <wchar.h>
 #include <locale.h>
 
-#define WIDTH 30
-#define HEIGHT 15
+#define WIDTH 50
+#define HEIGHT 20
 
 typedef struct {
     wchar_t *text;
@@ -36,6 +36,7 @@ int posx, posy;
 void quit_term(void);
 
 // print a character to the screen at position (x, y)
+// no double_wide characters
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
     if (y > HEIGHT-1 || x > WIDTH -1 || y < 0 || x < 0) {
         quit_term();
@@ -44,10 +45,14 @@ void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
     }
     buf.text[(y*WIDTH) + x] = c;
     buf.color[(y*WIDTH) + x] = color;
-    buf.color[(y*WIDTH) + x + 1] = DEFAULT;
+    // only overwrite the color if here was nothing set beneath
+    if (buf.color[(y*WIDTH) + x + 1] == BLANK) {
+        buf.color[(y*WIDTH) + x + 1] = DEFAULT;
+    } 
 }
 
 // print a string to the screen starting at position (x, y)
+// no double_wide characters
 void buf_print_str(tbuf_t buf, int x, int y, wchar_t* s, color_t color) {
     if (y > HEIGHT-1 || x > WIDTH -1 || y < 0 || x < 0) {
         quit_term();
@@ -61,9 +66,10 @@ void buf_print_str(tbuf_t buf, int x, int y, wchar_t* s, color_t color) {
             continue;
         }
         buf.text[(y*WIDTH) + x + j] = s[i];
+        buf.color[(y*WIDTH) + x + j] = color;
         j += 1;
     }
-    buf.color[(y*WIDTH) + x] = color;
+
     buf.color[(y*WIDTH) + x + wcslen(s)] = DEFAULT;
 }
 
@@ -72,7 +78,7 @@ void clear_buf(tbuf_t buf, wchar_t c) {
         buf.text[i] = c;
     }
     for (int i = 0; i < WIDTH*HEIGHT; i++) {
-        buf.color[i] = 0;
+        buf.color[i] = BLANK;
     }
 }
 
@@ -187,8 +193,9 @@ int main() {
 
         // --------- draw ----------
         clear_buf(buf, L'⋅');
+        buf_print_str(buf, posx, posy + 2, L"ahmedﬀ", RED);
+        buf_print_char(buf, 10, 8, L'⇐', CYAN);
         buf_print_char(buf, posx, posy, L'☻', GREEN);
-        buf_print_str(buf, posx, posy + 2, L"ahmed", RED);
         print_buf(buf);
         printf("\e[%dA", HEIGHT);
 
