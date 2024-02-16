@@ -36,13 +36,13 @@ tbuf_t buf;
 int posx, posy;
 
 // functions
-void quit_term(void);
+void termQuit(void);
 
 // print a character to the screen at position (x, y)
 // no double_wide characters
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
     if (y > HEIGHT-1 || x > WIDTH -1 || y < 0 || x < 0) {
-        quit_term();
+        termQuit();
         printf("ERROR buf_print_char: coordinates out of range!\n");
         exit(1);
     }
@@ -58,7 +58,7 @@ void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
 // no double_wide characters
 void buf_print_str(tbuf_t buf, int x, int y, wchar_t* s, color_t color) {
     if (y > HEIGHT-1 || x > WIDTH -1 || y < 0 || x < 0) {
-        quit_term();
+        termQuit();
         printf("ERROR buf_print_str: coordinates out of range!\n");
         exit(1);
     }
@@ -127,9 +127,11 @@ void present_buf(tbuf_t buf) {
             }
         }
     }
+    // cursor back to top
+    printf("\e[%dA", HEIGHT);
 }
 
-void init() {
+void termInit() {
     // termios: switch to canonical mode, disable echo
     tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
@@ -184,7 +186,7 @@ void process_input() {
     }
 }
 
-void quit_term() {
+void termQuit() {
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
@@ -202,7 +204,7 @@ void quit_term() {
 
 
 int main() {
-    init();
+    termInit();
     while (!quit) {
         process_input();
 
@@ -219,14 +221,10 @@ int main() {
         // present buffer
         present_buf(buf);
 
-        // cursor back to top
-        printf("\e[%dA", HEIGHT);
-
         usleep(100000);
     }
 
-    quit_term();
-    printf("\e[0m");
+    termQuit();
 
     return 0;
 }
