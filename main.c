@@ -194,7 +194,6 @@ void quit_term() {
     printf("\e[0m");
     // clear the game
     printf("\e[0J");
-    putchar('\e');
 
     // free resources from terminal buffer
     free(buf.text);
