@@ -1,10 +1,5 @@
-/*
-
-A simple terminal drawing library written in C with no external dependencies
-
-include it with a simple 1
-
-*/
+// floTerm:
+// A simple terminal drawing library written in C with no external dependencies
 
 #ifndef FLOTERM_H
 #define FLOTERM_H
