@@ -5,8 +5,8 @@
 #include <wchar.h>
 #include <locale.h>
 
-#define WIDTH 50
-#define HEIGHT 20
+#define WIDTH 30
+#define HEIGHT 15
 
 typedef struct {
     wchar_t *text;
@@ -70,7 +70,9 @@ void buf_print_str(tbuf_t buf, int x, int y, wchar_t* s, color_t color) {
         j += 1;
     }
 
-    buf.color[(y*WIDTH) + x + wcslen(s)] = DEFAULT;
+    if (buf.color[(y*WIDTH) + x + wcslen(s)] == BLANK) {
+        buf.color[(y*WIDTH) + x + wcslen(s)] = DEFAULT;
+    } 
 }
 
 void clear_buf(tbuf_t buf, wchar_t c) {
@@ -110,7 +112,7 @@ void apply_color(color_t color) {
     }
 }
 
-void print_buf(tbuf_t buf) {
+void present_buf(tbuf_t buf) {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             // check color buffer for colors
@@ -137,6 +139,7 @@ void init() {
 
     // set encoding
     setlocale(LC_ALL, "C.UTF-8");
+
     // hide cursor
     printf("\e[?25l");
 
@@ -179,10 +182,12 @@ void process_input() {
 }
 
 void quit_term() {
+    // unhide cursor
     printf("\e[?25h");
+    // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    printf("\e[%dB", HEIGHT);
-
+    // clear the game
+    printf("\e[0J");
 }
 
 
@@ -193,10 +198,18 @@ int main() {
 
         // --------- draw ----------
         clear_buf(buf, L'⋅');
-        buf_print_str(buf, posx, posy + 2, L"ahmedﬀ", RED);
-        buf_print_char(buf, 10, 8, L'⇐', CYAN);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 1, L"┌─────────────┐", BLUE);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2, L"│             │", BLUE);
+        buf_print_str(buf, WIDTH/2 - 7, HEIGHT/2, L"Hello, World!", RED);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 + 1, L"└─────────────┘", BLUE);
+        buf_print_char(buf, 10, 12, L'⇐', CYAN);
         buf_print_char(buf, posx, posy, L'☻', GREEN);
-        print_buf(buf);
+        // --------- draw ----------
+
+        // present buffer
+        present_buf(buf);
+
+        // cursor back to top
         printf("\e[%dA", HEIGHT);
 
         usleep(100000);
