@@ -75,12 +75,12 @@ void buf_print_str(tbuf_t buf, int x, int y, wchar_t* s, color_t color) {
     } 
 }
 
-void clear_buf(tbuf_t buf, wchar_t c) {
+void clear_buf(tbuf_t buf, wchar_t c, color_t color) {
     for (int i = 0; i < WIDTH*HEIGHT; i++) {
         buf.text[i] = c;
     }
     for (int i = 0; i < WIDTH*HEIGHT; i++) {
-        buf.color[i] = BLANK;
+        buf.color[i] = color;
     }
 }
 
@@ -144,7 +144,7 @@ void init() {
     printf("\e[?25l");
 
     // fill buffer with whitespace
-    clear_buf(buf, L' ');
+    clear_buf(buf, L' ', BLANK);
 }
 
 // TODO: there is probably a better way to take input
@@ -182,12 +182,16 @@ void process_input() {
 }
 
 void quit_term() {
-    // unhide cursor
-    printf("\e[?25h");
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+    // unhide cursor
+    printf("\e[?25h");
+    // reset color
+    printf("\e[0m");
     // clear the game
     printf("\e[0J");
+    putchar('\e');
 }
 
 
@@ -197,7 +201,7 @@ int main() {
         process_input();
 
         // --------- draw ----------
-        clear_buf(buf, L'⋅');
+        clear_buf(buf, L'⋅', MAGENTA);
         buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 2, L"┌─────────────┐", BLUE);
         buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 1, L"│             │", BLUE);
         buf_print_str(buf, WIDTH/2 - 7, HEIGHT/2 - 1, L"Hello, World!", YELLOW);
@@ -216,6 +220,7 @@ int main() {
     }
 
     quit_term();
+    printf("\e[0m");
 
     return 0;
 }
