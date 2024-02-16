@@ -8,6 +8,9 @@
 #define WIDTH 30
 #define HEIGHT 15
 
+// TODO: add support for background colors
+// possibly use color pairs like from curses
+
 typedef struct {
     wchar_t *text;
     int *color;
@@ -192,6 +195,10 @@ void quit_term() {
     // clear the game
     printf("\e[0J");
     putchar('\e');
+
+    // free resources from terminal buffer
+    free(buf.text);
+    free(buf.color);
 }
 
 
