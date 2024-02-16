@@ -198,10 +198,10 @@ int main() {
 
         // --------- draw ----------
         clear_buf(buf, L'⋅');
-        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 1, L"┌─────────────┐", BLUE);
-        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2, L"│             │", BLUE);
-        buf_print_str(buf, WIDTH/2 - 7, HEIGHT/2, L"Hello, World!", RED);
-        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 + 1, L"└─────────────┘", BLUE);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 2, L"┌─────────────┐", BLUE);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2 - 1, L"│             │", BLUE);
+        buf_print_str(buf, WIDTH/2 - 7, HEIGHT/2 - 1, L"Hello, World!", YELLOW);
+        buf_print_str(buf, WIDTH/2 - 8, HEIGHT/2, L"└─────────────┘", BLUE);
         buf_print_char(buf, 10, 12, L'⇐', CYAN);
         buf_print_char(buf, posx, posy, L'☻', GREEN);
         // --------- draw ----------
