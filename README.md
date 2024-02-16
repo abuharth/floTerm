@@ -1,7 +1,7 @@
 # floTerm
 A simple and intuitive terminal drawing library. Featuring unicode characters and color!
 
-![image](https://github.com/abuharth/floTerm/assets/145587343/5ba92782-41c0-4b1d-8750-6b984e26384b)
+![image](https://github.com/abuharth/floTerm/assets/145587343/df275eb8-c6dc-4971-90d9-c0c8f595f2e4)
 
 # running floTerm
 Clone the repository, or just download main.c. In the terminal, run:
