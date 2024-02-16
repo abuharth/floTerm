@@ -71,17 +71,18 @@ int main() {
         buf_print_char(buf, posx, posy, L'☻', GREEN);
         // --------- draw ----------
 
-        present_buf(buf);
-        usleep(100000);
-
         // catching interrupt signals like Ctrl-c
         signal(SIGINT, handle_signal);
         signal(SIGTSTP, handle_signal);
+
+        present_buf(buf);
+        usleep(100000);
+
     }
 
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    // reset colors, clear screen, and free memory from buffer
+    // clear screen, reset color mode, free buffer memory
     termQuit(buf);
     return 0;
 }

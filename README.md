@@ -3,17 +3,11 @@ A simple and intuitive terminal drawing library. Featuring unicode characters an
 
 ![image](https://github.com/abuharth/floTerm/assets/145587343/f2865f83-4f92-497a-ad0f-c3c4707b0cce)
 
-# running floTerm
-Clone the repository, or just download main.c. In the terminal, run:
-```
-  $ cc main.c
-  $./a.out
-```
-Currently, you can just press WASD to move the sprite and text around.
+# Adding floTerm to your project
+Adding this library to your project is as simple as downloading the floTerm.h and floTerm.c files
+and including floTerm.h in your main file. Then you can use the example mains for guidance on how to get started.
 
-# Planned Additions
-I am planning to make this more modular so it can be included in any project that is writing to the
-terminal in this way. Since it has no external dependencies, it should be very portable and easy to use
-by just importing one header file.
-1. add better input handling (current setup with termios can use some work)
-2. support for background colors?
+# Running floTerm examples
+Clone the repository, in the terminal, run:
+
+`make build1` or `make build2` to build from main.c or main_2.c in src.

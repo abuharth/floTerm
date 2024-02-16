@@ -25,13 +25,12 @@ int main() {
         buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", BLUE);
         // --------- draw ----------
 
-        present_buf(buf);
-        usleep(100000);
-
         // catching interrupt signals like Ctrl-c
         signal(SIGINT, handle_signal);
         signal(SIGTSTP, handle_signal);
 
+        present_buf(buf);
+        usleep(100000);
     }
     // clear screen, reset color mode, free buffer memory
     termQuit(buf);
