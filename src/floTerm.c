@@ -5,6 +5,10 @@
 #include <locale.h>
 #include "floTerm.h"
 
+// TODO: add cull_color_buffer internal method that simplifies
+// the cull buffer at the end of drawing so that there are much
+// less escape sequences sent to accommodate for colors
+
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
