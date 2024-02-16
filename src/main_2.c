@@ -56,7 +56,8 @@ int main() {
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-
+    
+    // initialize terminal buffer with width and height 30x20
     termInit(&buf, 30, 20);
     while (!quit) {
         process_input();
