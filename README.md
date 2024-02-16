@@ -10,4 +10,6 @@ and including `floTerm.h` in your main file. Then you can use the example mains 
 # Running floTerm examples
 Clone the repository. From the folder, run:
 
-`make build1` or `make build2` to build from main.c or main_2.c in src.
+`make build1` or `make build2` to build from main.c or main_2.c in src
+
+Then run `./a.out` to run the the program that was built
