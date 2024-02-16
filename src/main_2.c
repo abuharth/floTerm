@@ -80,8 +80,7 @@ int main() {
 
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-
-    // make sure to call termQuit last because it exits the program
+    // reset colors, clear screen, and free memory from buffer
     termQuit(buf);
     return 0;
 }
