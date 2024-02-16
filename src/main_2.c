@@ -9,8 +9,8 @@
 #include "floTerm.h"
 
 struct termios oldt, newt;
-
 tbuf_t buf;
+
 int quit = 0;
 int posx = 5;
 int posy = 5;
