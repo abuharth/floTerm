@@ -14,6 +14,7 @@ void handle_signal(int sig) {
 }
 
 int main() {
+    // initialize terminal buffer with width and height 30x20
     termInit(&buf, 30, 20);
     while (!quit) {
         // --------- draw ----------
@@ -32,6 +33,7 @@ int main() {
         signal(SIGTSTP, handle_signal);
 
     }
+    // clear screen, reset color mode, free buffer memory
     termQuit(buf);
     return 0;
 }
