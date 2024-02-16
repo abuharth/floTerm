@@ -5,10 +5,6 @@
 #include <locale.h>
 #include "floTerm.h"
 
-// TODO: add cull_color_buffer internal method that simplifies
-// the cull buffer at the end of drawing so that there are much
-// less escape sequences sent to accommodate for colors
-
 // TODO: add support for background colors, change names in the
 // COLOR ENUM to not clog the namespace
 
@@ -16,9 +12,9 @@
 // double wide characters not preferred as they offset the row
 void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
-        termQuit(buf);
+        // termQuit(buf);
         printf("ERROR buf_print_char: coordinates out of range!\n");
-        exit(1);
+        return;
     }
     buf.text[(y*buf.width) + x] = c;
     buf.color[(y*buf.width) + x] = color;
@@ -32,9 +28,9 @@ void buf_print_char(tbuf_t buf, int x, int y, wchar_t c, color_t color) {
 // double wide characters are not preferred as they offset the row
 void buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, color_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
-        termQuit(buf);
+        // termQuit(buf);
         printf("ERROR buf_print_str: coordinates out of range!\n");
-        exit(1);
+        return;
     }
 
     int j = 0;
@@ -61,28 +57,42 @@ void clear_buf(tbuf_t buf, wchar_t c, color_t color) {
     }
 }
 
-void apply_color(color_t color) {
+void apply_color(color_t color, color_t prev_color) {
     switch (color) {
         case DEFAULT:
-            printf("\e[39m");
+            if (prev_color != DEFAULT) {
+                printf("\e[39m");
+            }
             break;
         case RED:
-            printf("\e[31m");
+            if (prev_color != RED) {
+                printf("\e[31m");
+            }
             break;
         case GREEN:
-            printf("\e[32m");
+            if (prev_color != GREEN) {
+                printf("\e[32m");
+            }
             break;
         case YELLOW:
-            printf("\e[33m");
+            if (prev_color != YELLOW) {
+                printf("\e[33m");
+            }
             break;
         case BLUE:
-            printf("\e[34m");
+            if (prev_color != BLUE) {
+                printf("\e[34m");
+            }
             break;
         case MAGENTA:
-            printf("\e[35m");
+            if (prev_color != MAGENTA) {
+                printf("\e[35m");
+            }
             break;
         case CYAN:
-            printf("\e[36m");
+            if (prev_color != CYAN) {
+                printf("\e[36m");
+            }
             break;
         default:
             break;
@@ -93,7 +103,7 @@ void present_buf(tbuf_t buf) {
     for (int i = 0; i < buf.height; i++) {
         for (int j = 0; j < buf.width; j++) {
             // check color buffer for colors
-            apply_color(buf.color[(i*buf.width) + j]);
+            apply_color(buf.color[(i*buf.width) + j], buf.color[(i*buf.width) + j - 1]);
 
             printf("%lc", buf.text[(i*buf.width) + j]);
             if (j == buf.width-1) {
