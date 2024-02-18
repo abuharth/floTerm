@@ -16,13 +16,14 @@ void handle_signal(int sig) {
 int main() {
     // initialize terminal buffer with width and height 30x20
     termInit(&buf, 30, 20);
+
     while (!quit) {
         // --------- draw ----------
-        clear_buf(buf, L'•', DEFAULT);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", BLUE);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", BLUE);
-        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", RED);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", BLUE);
+        clear_buf(buf, L'•', P_WHITE_BLACK);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", P_BLACK_WHITE);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", P_BLACK_WHITE);
+        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_BLACK_YELLOW);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", P_BLACK_WHITE);
         // --------- draw ----------
 
         // catching interrupt signals like Ctrl-c

@@ -63,12 +63,12 @@ int main() {
         process_input();
 
         // --------- draw ----------
-        clear_buf(buf, L'⋅', MAGENTA);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", BLUE);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", BLUE);
-        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", YELLOW);
-        buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", BLUE);
-        buf_print_char(buf, posx, posy, L'☻', CYAN);
+        clear_buf(buf, L'⋅', P_BLACK_WHITE);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", P_BLUE);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", P_BLUE);
+        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_YELLOW_BLACK);
+        buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", P_BLUE);
+        buf_print_char(buf, posx, posy, L'☻', P_YELLOW_BLACK);
         // --------- draw ----------
 
         // catching interrupt signals like Ctrl-c
