@@ -5,12 +5,7 @@
 #include <locale.h>
 #include "floTerm.h"
 
-// TODO: add support for background colors, change names in the
-// COLOR ENUM to not clog the namespace
-
-// TODO: pass a pointer to buf to avoid making a local copy on
-// each function call, also this allows us to actually free
-// the memory from the buffer on termQuit
+// TODO: add support for background colors
 
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
@@ -95,6 +90,11 @@ void apply_color(color_t color, color_t prev_color) {
         case CYAN:
             if (prev_color != CYAN) {
                 printf("\e[36m");
+            }
+            break;
+        case WHITE:
+            if (prev_color != WHITE) {
+                printf("\e[37m");
             }
             break;
         default:

@@ -18,10 +18,10 @@ int main() {
     termInit(&buf, 30, 20);
     while (!quit) {
         // --------- draw ----------
-        clear_buf(buf, L'⋅', MAGENTA);
+        clear_buf(buf, L'•', DEFAULT);
         buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", BLUE);
         buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", BLUE);
-        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", YELLOW);
+        buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", RED);
         buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", BLUE);
         // --------- draw ----------
 

@@ -68,7 +68,7 @@ int main() {
         buf_print_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", BLUE);
         buf_print_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", YELLOW);
         buf_print_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", BLUE);
-        buf_print_char(buf, posx, posy, L'☻', GREEN);
+        buf_print_char(buf, posx, posy, L'☻', CYAN);
         // --------- draw ----------
 
         // catching interrupt signals like Ctrl-c

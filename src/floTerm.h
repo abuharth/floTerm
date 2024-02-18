@@ -16,6 +16,7 @@ typedef struct {
 typedef enum {
     BLANK,
     DEFAULT,
+    WHITE,
     RED,
     GREEN,
     YELLOW,
