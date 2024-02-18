@@ -58,7 +58,7 @@ int main() {
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     
     // initialize terminal buffer with width and height 30x20
-    termInit(&buf, 30, 20);
+    termInit(&buf, 50, 20);
     while (!quit) {
         process_input();
 
@@ -83,6 +83,6 @@ int main() {
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     // clear screen, reset color mode, free buffer memory
-    termQuit(buf);
+    termQuit(&buf);
     return 0;
 }

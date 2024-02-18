@@ -34,6 +34,6 @@ int main() {
         usleep(100000);
     }
     // clear screen, reset color mode, free buffer memory
-    termQuit(buf);
+    termQuit(&buf);
     return 0;
 }

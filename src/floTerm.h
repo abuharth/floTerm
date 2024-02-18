@@ -57,6 +57,6 @@ void clear_buf(tbuf_t buf, wchar_t c, colorpair_t color);
 void present_buf(tbuf_t buf);
 
 void termInit(tbuf_t *buf, int width, int height);
-void termQuit(tbuf_t buf);
+void termQuit(tbuf_t *buf);
 
 #endif

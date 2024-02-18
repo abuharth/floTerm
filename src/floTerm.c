@@ -44,7 +44,6 @@ int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
 // double wide characters are not preferred as they offset the row
 int buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
-        printf("ERROR buf_print_str: coordinates out of range!\n");
         return -1;
     }
 
@@ -185,7 +184,7 @@ void termInit(tbuf_t *buf, int width, int height) {
     clear_buf(*buf, L' ', blank);
 }
 
-void termQuit(tbuf_t buf) {
+void termQuit(tbuf_t *buf) {
     // unhide cursor
     printf("\e[?25h");
     // reset color
@@ -194,6 +193,7 @@ void termQuit(tbuf_t buf) {
     printf("\e[0J");
 
     // free resources from terminal buffer
-    free(buf.text);
-    free(buf.fg_color);
+    free(buf->text);
+    free(buf->fg_color);
+    free(buf->bg_color);
 }
