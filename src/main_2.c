@@ -64,10 +64,8 @@ int main() {
 
         // --------- draw ----------
         clear_buf(buf, L'⋅', P_BLACK_WHITE);
-        buf_put_str(buf, buf.width/2 - 8, buf.height/2 - 2, L"┌─────────────┐", P_BLUE);
-        buf_put_str(buf, buf.width/2 - 8, buf.height/2 - 1, L"│             │", P_BLUE);
-        buf_put_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_YELLOW_BLACK);
-        buf_put_str(buf, buf.width/2 - 8, buf.height/2, L"└─────────────┘", P_BLUE);
+        buf_put_rect(buf, buf.width/2 - 8, buf.height/2 - 2, 15, 3, P_CYAN_BG);
+        buf_put_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_MAGENTA_BG);
         buf_put_char(buf, posx, posy, L'☻', P_YELLOW_BLACK);
         // --------- draw ----------
 

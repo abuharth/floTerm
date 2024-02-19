@@ -6,20 +6,36 @@
 #include "floTerm.h"
 
 // color pair default definitions
-colorpair_t P_BLACK             = { CBLACK, CDEFAULT };  
-colorpair_t P_RED               = { CRED, CDEFAULT };
-colorpair_t P_GREEN             = { CGREEN, CDEFAULT };
-colorpair_t P_YELLOW            = { CYELLOW, CDEFAULT };
-colorpair_t P_BLUE              = { CBLUE, CDEFAULT };
-colorpair_t P_MAGENTA           = { CMAGENTA, CDEFAULT };
-colorpair_t P_CYAN              = { CCYAN, CDEFAULT };
-colorpair_t P_WHITE             = { CWHITE, CDEFAULT };
-colorpair_t P_DEFAULT           = { CDEFAULT, CDEFAULT };
+colorpair_t P_BLACK_FG       = { CBLACK, CDEFAULT };  
+colorpair_t P_RED_FG         = { CRED, CDEFAULT };
+colorpair_t P_GREEN_FG       = { CGREEN, CDEFAULT };
+colorpair_t P_YELLOW_FG      = { CYELLOW, CDEFAULT };
+colorpair_t P_BLUE_FG        = { CBLUE, CDEFAULT };
+colorpair_t P_MAGENTA_FG     = { CMAGENTA, CDEFAULT };
+colorpair_t P_CYAN_FG        = { CCYAN, CDEFAULT };
+colorpair_t P_WHITE_FG       = { CWHITE, CDEFAULT };
+colorpair_t P_DEFAULT_FG     = { CDEFAULT, CDEFAULT };
 
-colorpair_t P_BLACK_WHITE       = { CBLACK, CWHITE };
-colorpair_t P_BLACK_YELLOW      = { CBLACK, CYELLOW };
-colorpair_t P_WHITE_BLACK       = { CWHITE, CBLACK };
-colorpair_t P_YELLOW_BLACK      = { CYELLOW, CBLACK };
+colorpair_t P_BLACK_BG       = { CDEFAULT, CBLACK };  
+colorpair_t P_RED_BG         = { CDEFAULT, CRED };
+colorpair_t P_GREEN_BG       = { CDEFAULT, CGREEN };
+colorpair_t P_YELLOW_BG      = { CDEFAULT, CYELLOW };
+colorpair_t P_BLUE_BG        = { CDEFAULT, CBLUE };
+colorpair_t P_MAGENTA_BG     = { CDEFAULT, CMAGENTA };
+colorpair_t P_CYAN_BG        = { CDEFAULT, CCYAN };
+colorpair_t P_WHITE_BG       = { CDEFAULT, CWHITE };
+colorpair_t P_DEFAULT_BG     = { CDEFAULT, CDEFAULT };
+
+colorpair_t P_BLACK_WHITE    = { CBLACK, CWHITE };
+colorpair_t P_BLACK_YELLOW   = { CBLACK, CYELLOW };
+colorpair_t P_WHITE_BLACK    = { CWHITE, CBLACK };
+colorpair_t P_YELLOW_BLACK   = { CYELLOW, CBLACK };
+
+// TODO: possibly split up the Init/Quit functions to terminal init and buffer init
+// that way there is easy support for initializing multiple buffers of different sizes and
+// drawing them to the screen
+
+// TODO: possibly work out some better function names
 
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
@@ -27,6 +43,7 @@ int buf_put_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
         return -1;
     }
+
     buf.text[(y*buf.width) + x] = c;
     buf.fg_color[(y*buf.width) + x] = color.fg;
     buf.bg_color[(y*buf.width) + x] = color.bg;
@@ -49,21 +66,51 @@ int buf_put_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
 
     int j = 0;
     for (int i = 0; i < wcslen(s); i++) {
+        // ignored characters
         if (s[i] == L'\n') {
             continue;
         }
-        buf.text[(y*buf.width) + x + j] = s[i];
-        buf.fg_color[(y*buf.width) + x + j] = color.fg;
-        buf.bg_color[(y*buf.width) + x + j] = color.bg;
+        buf_put_char(buf, x + j, y, s[j], color);
         j += 1;
     }
+    return 0;
+}
 
-    if (buf.fg_color[(y*buf.width) + x + wcslen(s)] == CBLANK) {
-        buf.fg_color[(y*buf.width) + x + wcslen(s)] = CDEFAULT;
-    } 
-    if (buf.bg_color[(y*buf.width) + x + wcslen(s)] == CBLANK) {
-        buf.bg_color[(y*buf.width) + x + wcslen(s)] = CDEFAULT;
-    } 
+int buf_put_rect(tbuf_t buf, int x, int y, int w, int h, colorpair_t color) {
+    if ( y > buf.height-1 || x > buf.width - 1 || y < 0 || x < 0 ) {
+        return -1;
+    }
+    w -= 1;
+    h -= 1;
+
+    buf_put_char(buf, x, y, L'┌', color);
+    buf_put_char(buf, x + w, y, L'┐', color);
+    for (int i = 1; i < w; i++) {
+        buf_put_char(buf, x + i, y, L'─', color);
+    }
+    for (int i = 1; i < h; i++) {
+        buf_put_char(buf, x, y + i, L'│', color);
+        buf_put_char(buf, x + w, y + i, L'│', color);
+    }
+    for (int i = 1; i < w; i++) {
+        buf_put_char(buf, x + i, y + h, L'─', color);
+    }
+    buf_put_char(buf, x, y + h, L'└', color);
+    buf_put_char(buf, x + w, y + h, L'┘', color);
+
+    return 0;
+}
+
+int buf_put_filled_rect(tbuf_t buf, int x, int y, int w, int h, wchar_t c, colorpair_t color) {
+    if ( y > buf.height-1 || x > buf.width - 1 || y < 0 || x < 0 ) {
+        return -1;
+    }
+
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            buf_put_char(buf, x + i, y + j, c, color);
+        }
+    }
     return 0;
 }
 
@@ -154,6 +201,9 @@ void present_buf(tbuf_t buf) {
     // cursor back to top and left
     printf("\e[%dA", buf.height);
     printf("\e[1000D");
+    // reset color and clear screen
+    printf("\e[0m");
+    printf("\e[0J");
 }
 
 void termInit(tbuf_t *buf, int width, int height) {
