@@ -58,22 +58,22 @@ int main() {
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     
     // initialize terminal buffer with width and height 30x20
-    termInit(&buf, 50, 20);
+    terminit(&buf, 40, 20);
     while (!quit) {
         process_input();
 
         // --------- draw ----------
-        clear_buf(buf, L'⋅', P_BLACK_WHITE);
-        buf_put_rect(buf, buf.width/2 - 8, buf.height/2 - 2, 15, 3, P_CYAN_BG);
-        buf_put_str(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_MAGENTA_BG);
-        buf_put_char(buf, posx, posy, L'☻', P_YELLOW_BLACK);
+        bufclear(buf, L'⋅', P_BLACK_WHITE);
+        addrect(buf, buf.width/2 - 8, buf.height/2 - 2, 15, 3, P_CYAN_BG);
+        addstr(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_MAGENTA_BG);
+        addchar(buf, posx, posy, L'☻', P_YELLOW_BLACK);
         // --------- draw ----------
 
         // catching interrupt signals like Ctrl-c
         signal(SIGINT, handle_signal);
         signal(SIGTSTP, handle_signal);
 
-        present_buf(buf);
+        bufpresent(buf);
         usleep(100000);
 
     }
@@ -81,6 +81,6 @@ int main() {
     // set terminal settings back to normal
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     // clear screen, reset color mode, free buffer memory
-    termQuit(&buf);
+    termquit(&buf);
     return 0;
 }

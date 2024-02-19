@@ -31,15 +31,12 @@ colorpair_t P_BLACK_YELLOW   = { CBLACK, CYELLOW };
 colorpair_t P_WHITE_BLACK    = { CWHITE, CBLACK };
 colorpair_t P_YELLOW_BLACK   = { CYELLOW, CBLACK };
 
-// TODO: possibly split up the Init/Quit functions to terminal init and buffer init
-// that way there is easy support for initializing multiple buffers of different sizes and
-// drawing them to the screen
-
-// TODO: possibly work out some better function names
+// TODO: maybe add support for multiple buffers by splitting term
+// init/quit into term and buf init/quit
 
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
-int buf_put_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
+int addchar(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
         return -1;
     }
@@ -59,7 +56,7 @@ int buf_put_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
 
 // print a string of unicode characters to the buffer starting at position (x, y)
 // double wide characters are not preferred as they offset the row
-int buf_put_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
+int addstr(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
         return -1;
     }
@@ -70,51 +67,51 @@ int buf_put_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
         if (s[i] == L'\n') {
             continue;
         }
-        buf_put_char(buf, x + j, y, s[j], color);
+        addchar(buf, x + j, y, s[j], color);
         j += 1;
     }
     return 0;
 }
 
-int buf_put_rect(tbuf_t buf, int x, int y, int w, int h, colorpair_t color) {
+int addrect(tbuf_t buf, int x, int y, int w, int h, colorpair_t color) {
     if ( y > buf.height-1 || x > buf.width - 1 || y < 0 || x < 0 ) {
         return -1;
     }
     w -= 1;
     h -= 1;
 
-    buf_put_char(buf, x, y, L'┌', color);
-    buf_put_char(buf, x + w, y, L'┐', color);
+    addchar(buf, x, y, L'┌', color);
+    addchar(buf, x + w, y, L'┐', color);
     for (int i = 1; i < w; i++) {
-        buf_put_char(buf, x + i, y, L'─', color);
+        addchar(buf, x + i, y, L'─', color);
     }
     for (int i = 1; i < h; i++) {
-        buf_put_char(buf, x, y + i, L'│', color);
-        buf_put_char(buf, x + w, y + i, L'│', color);
+        addchar(buf, x, y + i, L'│', color);
+        addchar(buf, x + w, y + i, L'│', color);
     }
     for (int i = 1; i < w; i++) {
-        buf_put_char(buf, x + i, y + h, L'─', color);
+        addchar(buf, x + i, y + h, L'─', color);
     }
-    buf_put_char(buf, x, y + h, L'└', color);
-    buf_put_char(buf, x + w, y + h, L'┘', color);
+    addchar(buf, x, y + h, L'└', color);
+    addchar(buf, x + w, y + h, L'┘', color);
 
     return 0;
 }
 
-int buf_put_filled_rect(tbuf_t buf, int x, int y, int w, int h, wchar_t c, colorpair_t color) {
+int addrect_fill(tbuf_t buf, int x, int y, int w, int h, wchar_t c, colorpair_t color) {
     if ( y > buf.height-1 || x > buf.width - 1 || y < 0 || x < 0 ) {
         return -1;
     }
 
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            buf_put_char(buf, x + i, y + j, c, color);
+            addchar(buf, x + i, y + j, c, color);
         }
     }
     return 0;
 }
 
-void clear_buf(tbuf_t buf, wchar_t c, colorpair_t color) {
+void bufclear(tbuf_t buf, wchar_t c, colorpair_t color) {
     for (int i = 0; i < buf.width*buf.height; i++) {
         buf.text[i] = c;
     }
@@ -185,7 +182,7 @@ void apply_color(int fg_flag, color_t color, color_t prev_color) {
     }
 }
 
-void present_buf(tbuf_t buf) {
+void bufpresent(tbuf_t buf) {
     for (int i = 0; i < buf.height; i++) {
         for (int j = 0; j < buf.width; j++) {
             // check color buffer for colors
@@ -206,7 +203,7 @@ void present_buf(tbuf_t buf) {
     printf("\e[0J");
 }
 
-void termInit(tbuf_t *buf, int width, int height) {
+void terminit(tbuf_t *buf, int width, int height) {
     buf->width = width;
     buf->height = height;
 
@@ -231,10 +228,10 @@ void termInit(tbuf_t *buf, int width, int height) {
 
     // fill buffer with whitespace
     colorpair_t blank = {CBLANK, CBLANK};
-    clear_buf(*buf, L' ', blank);
+    bufclear(*buf, L' ', blank);
 }
 
-void termQuit(tbuf_t *buf) {
+void termquit(tbuf_t *buf) {
     // unhide cursor
     printf("\e[?25h");
     // reset color
