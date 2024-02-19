@@ -23,7 +23,7 @@ colorpair_t P_YELLOW_BLACK      = { CYELLOW, CBLACK };
 
 // print a unicode character to the buffer at position (x, y)
 // double wide characters not preferred as they offset the row
-int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
+int buf_put_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
         return -1;
     }
@@ -42,7 +42,7 @@ int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color) {
 
 // print a string of unicode characters to the buffer starting at position (x, y)
 // double wide characters are not preferred as they offset the row
-int buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
+int buf_put_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color) {
     if (y > buf.height-1 || x > buf.width -1 || y < 0 || x < 0) {
         return -1;
     }
