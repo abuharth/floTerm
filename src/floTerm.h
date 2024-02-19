@@ -51,8 +51,8 @@ extern colorpair_t P_WHITE_BLACK;
 extern colorpair_t P_YELLOW_BLACK;
 
 // floTerm functions
-int buf_print_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color);
-int buf_print_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color);
+int buf_put_char(tbuf_t buf, int x, int y, wchar_t c, colorpair_t color);
+int buf_put_str(tbuf_t buf, int x, int y, wchar_t *s, colorpair_t color);
 void clear_buf(tbuf_t buf, wchar_t c, colorpair_t color);
 void present_buf(tbuf_t buf);
 
