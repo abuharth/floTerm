@@ -35,6 +35,8 @@ typedef struct {
 // predefined color pairs for convenience
 // user can define custom color pairs
 // by using the colorpair_t struct
+extern colorpair_t P_DEFAULT;
+
 extern colorpair_t P_BLACK_FG;
 extern colorpair_t P_RED_FG;
 extern colorpair_t P_GREEN_FG;
@@ -43,7 +45,6 @@ extern colorpair_t P_BLUE_FG;
 extern colorpair_t P_MAGENTA_FG;
 extern colorpair_t P_CYAN_FG;
 extern colorpair_t P_WHITE_FG;
-extern colorpair_t P_DEFAULT_FG;
 
 extern colorpair_t P_BLACK_BG;
 extern colorpair_t P_RED_BG;
@@ -53,7 +54,6 @@ extern colorpair_t P_BLUE_BG;
 extern colorpair_t P_MAGENTA_BG;
 extern colorpair_t P_CYAN_BG;
 extern colorpair_t P_WHITE_BG;
-extern colorpair_t P_DEFAULT_BG;
 
 extern colorpair_t P_BLACK_WHITE;
 extern colorpair_t P_BLACK_YELLOW;

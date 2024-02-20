@@ -20,7 +20,7 @@ int main() {
     while (!quit) {
         // --------- draw ----------
         bufclear(buf, L'•', P_BLUE_BG);
-        addrect(buf, 0, 0, buf.width, buf.height, P_DEFAULT_FG);
+        addrect(buf, 0, 0, buf.width, buf.height, P_CYAN_BG);
         addstr(buf, buf.width/2 - 7, buf.height/2 - 1, L"Hello, World!", P_BLACK_YELLOW);
         addrect(buf, buf.width/2 - 8, buf.height/2 - 2, 15, 3, P_GREEN_BG);
         // --------- draw ----------

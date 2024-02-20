@@ -6,6 +6,8 @@
 #include "floTerm.h"
 
 // color pair default definitions
+colorpair_t P_DEFAULT        = { CDEFAULT, CDEFAULT };
+
 colorpair_t P_BLACK_FG       = { CBLACK, CDEFAULT };  
 colorpair_t P_RED_FG         = { CRED, CDEFAULT };
 colorpair_t P_GREEN_FG       = { CGREEN, CDEFAULT };
@@ -14,7 +16,6 @@ colorpair_t P_BLUE_FG        = { CBLUE, CDEFAULT };
 colorpair_t P_MAGENTA_FG     = { CMAGENTA, CDEFAULT };
 colorpair_t P_CYAN_FG        = { CCYAN, CDEFAULT };
 colorpair_t P_WHITE_FG       = { CWHITE, CDEFAULT };
-colorpair_t P_DEFAULT_FG     = { CDEFAULT, CDEFAULT };
 
 colorpair_t P_BLACK_BG       = { CDEFAULT, CBLACK };  
 colorpair_t P_RED_BG         = { CDEFAULT, CRED };
@@ -24,7 +25,6 @@ colorpair_t P_BLUE_BG        = { CDEFAULT, CBLUE };
 colorpair_t P_MAGENTA_BG     = { CDEFAULT, CMAGENTA };
 colorpair_t P_CYAN_BG        = { CDEFAULT, CCYAN };
 colorpair_t P_WHITE_BG       = { CDEFAULT, CWHITE };
-colorpair_t P_DEFAULT_BG     = { CDEFAULT, CDEFAULT };
 
 colorpair_t P_BLACK_WHITE    = { CBLACK, CWHITE };
 colorpair_t P_BLACK_YELLOW   = { CBLACK, CYELLOW };
@@ -195,12 +195,13 @@ void bufpresent(tbuf_t buf) {
             }
         }
     }
+
+    // reset color and clear rest of screen
+    printf("\e[0m");
+    printf("\e[0J");
     // cursor back to top and left
     printf("\e[%dA", buf.height);
     printf("\e[1000D");
-    // reset color and clear screen
-    printf("\e[0m");
-    printf("\e[0J");
 }
 
 void terminit(tbuf_t *buf, int width, int height) {
@@ -211,7 +212,6 @@ void terminit(tbuf_t *buf, int width, int height) {
     buf->text = (wchar_t*) malloc(buf->width*buf->height*sizeof(wchar_t));
     buf->fg_color = (int*) malloc(buf->width*buf->height*sizeof(int));
     buf->bg_color = (int*) malloc(buf->width*buf->height*sizeof(int));
-
 
     // set encoding
     setlocale(LC_ALL, "C.UTF-8");
